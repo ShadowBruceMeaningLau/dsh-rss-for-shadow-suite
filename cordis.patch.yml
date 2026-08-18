@@ -1,0 +1,141 @@
+# dsh-rss-for-shadow-suite bundle patch — 一站式资讯订阅套装（补丁层）。
+# 前置：先安装 dsh-rss 与 @dsh-routines/bundle（本补丁只负责配置与修复）。
+#
+# 本补丁做三件事：
+#   1) tool-jobs 宿主层重启用（dsh-routines 调度器在宿主层 ctx.jobs.start）
+#   2) 覆盖 dsh-rss 行配置：代理 + 浏览器 UA + 33 个订阅源
+#   3) 覆盖 dsh-routines 调度器行配置：runModule 以 file:// URL 修复 Windows 崩溃
+
+# ── 1. 作业控制器（web 组合默认禁用，调度器需要它） ──────────────────────
+- id: tool-jobs
+  name: '@deepseek-ai/dsh-tool-jobs'
+  disabled: null
+
+# ── 2. RSS 订阅行配置（整行 config 覆盖） ─────────────────────────────────
+- id: rss
+  name: 'dsh-rss'
+  config:
+    timeoutMs: 15000
+    proxyUrl: 'http://127.0.0.1:7897'
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36'
+    feedsYaml: |
+      # ── DSH 生态 ──
+      - url: https://github.com/deepseek-ai/deepseek-harness/releases.atom
+        name: DSH Releases
+        category: DSH生态
+      # ── AI 工程与研究 ──
+      - url: https://simonwillison.net/atom/everything/
+        name: Simon Willison
+        category: AI工程
+      - url: https://huggingface.co/blog/feed.xml
+        name: HuggingFace Blog
+        category: AI工程
+      - url: https://www.lesswrong.com/feed.xml
+        name: LessWrong
+        category: AI安全
+      # ── 大厂官方 ──
+      - url: https://openai.com/news/rss.xml
+        name: OpenAI Blog
+        category: 官方公告
+      - url: https://blog.google/technology/ai/rss/
+        name: Google AI Blog
+        category: 官方公告
+      # ── 国际技术/媒体 ──
+      - url: https://news.ycombinator.com/rss
+        name: Hacker News
+        category: 计算机
+      - url: https://lobste.rs/rss
+        name: Lobsters
+        category: 计算机
+      - url: https://arstechnica.com/ai/feed/
+        name: Ars Technica AI
+        category: 国际媒体
+      - url: https://techcrunch.com/category/artificial-intelligence/feed/
+        name: TechCrunch AI
+        category: 国际媒体
+      - url: https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+        name: The Verge AI
+        category: 国际媒体
+      # ── 数学/物理/科学 ──
+      - url: https://www.quantamagazine.org/feed/
+        name: Quanta Magazine
+        category: 数学物理
+      - url: https://physicsworld.com/feed/
+        name: Physics World
+        category: 数学物理
+      - url: https://www.nature.com/subjects/mathematics-and-computing.rss
+        name: Nature 数学与计算
+        category: 数学物理
+      - url: https://www.sciencenews.org/feed
+        name: Science News
+        category: 数学物理
+      # ── 中文媒体 ──
+      - url: https://www.jiqizhixin.com/rss
+        name: 机器之心
+        category: 中文AI媒体
+      - url: https://www.qbitai.com/feed
+        name: 量子位
+        category: 中文AI媒体
+      - url: https://www.aiera.com.cn/feed
+        name: 新智元
+        category: 中文AI媒体
+      - url: https://sspai.com/feed
+        name: 少数派
+        category: 中文科技
+      - url: https://www.ifanr.com/feed
+        name: 爱范儿
+        category: 中文科技
+      - url: https://36kr.com/feed
+        name: 36氪
+        category: 中文科技
+      - url: https://www.infoq.cn/feed
+        name: InfoQ中文
+        category: 中文科技
+      # ── arXiv 论文（分类速递）──
+      - url: https://rss.arxiv.org/rss/cs.AI
+        name: arXiv cs.AI
+        category: 论文
+      - url: https://rss.arxiv.org/rss/cs.LG
+        name: arXiv cs.LG
+        category: 论文
+      - url: https://rss.arxiv.org/rss/cs.CL
+        name: arXiv cs.CL
+        category: 论文
+      - url: https://rss.arxiv.org/rss/cs.SE
+        name: arXiv cs.SE
+        category: 论文
+      - url: https://rss.arxiv.org/rss/math
+        name: arXiv math
+        category: 论文
+      - url: https://rss.arxiv.org/rss/math-ph
+        name: arXiv math-ph
+        category: 论文
+      - url: https://rss.arxiv.org/rss/hep-th
+        name: arXiv hep-th
+        category: 论文
+      - url: https://rss.arxiv.org/rss/cond-mat
+        name: arXiv cond-mat
+        category: 论文
+      - url: https://rss.arxiv.org/rss/gr-qc
+        name: arXiv gr-qc
+        category: 论文
+      - url: https://rss.arxiv.org/rss/physics
+        name: arXiv physics
+        category: 论文
+      - url: https://rss.arxiv.org/rss/quant-ph
+        name: arXiv quant-ph
+        category: 论文
+
+# ── 3. 调度器行配置（修复 Windows 下 runModule 路径崩溃） ────────────────
+- id: routines-scheduler
+  name: '@dsh-routines/bundle/scheduler'
+  config:
+    # runModule 默认值是 fileURLToPath 产物（盘符路径），被当作模块名写入
+    # 生成的补丁会崩；这里动态解析成 file:// URL。
+    runModule: !!js "process.getBuiltinModule('node:url').pathToFileURL(process.getBuiltinModule('node:module').createRequire(baseUrl + 'anchor.js').resolve('@dsh-routines/bundle/run')).href"
+
+# ── 4. 本插件自身的宿主行：落盘例程 + 种子化状态 + CLI 补丁 ──────────────
+- insert:
+    - id: rss-shadow-suite
+      name: 'dsh-rss-for-shadow-suite'
+

@@ -1,0 +1,16 @@
+name: ai-digest
+schedule: '@daily'
+timezone: Asia/Shanghai
+profile: headless
+cwd: 'D:/Obsidian本地库/书籍管理'
+overlap: skip
+timeoutMin: 20
+prompt: |
+  用 rss_fetch 工具抓取我订阅的全部 RSS 源（论文分类除外），重点看中文AI媒体、官方公告、AI工程、数学物理、计算机五个分类，筛选最近 24 小时内的更新，输出一份中文《AI 每日简报》（Markdown 格式）：
+  1. 今日头条：3-5 条，每条一句话概述 + 出处
+  2. 值得精读：2-3 篇，一句话推荐理由 + 原文链接
+  3. 大厂动态：OpenAI / Google / DeepSeek 相关一句话速览
+  4. 数学/物理/计算机速览：该方向 2-4 条一句话动态
+  5. DSH 生态：deepseek-harness 发布或社区值得关注的变化
+  全文控制在 800 字以内，客观转述；无法确证的信息标注「待确认」。
+  最后用 write 工具把简报全文写入工作区内的 RSS订阅/简报-YYYY-MM-DD.md（YYYY-MM-DD 用今天的日期，覆盖同名旧文件）。
