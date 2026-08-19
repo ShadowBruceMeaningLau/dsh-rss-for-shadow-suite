@@ -1,8 +1,8 @@
 name: ai-digest
-schedule: '@daily'
+schedule: '10 12 * * *'
 timezone: Asia/Shanghai
-profile: headless
-cwd: '<你的Obsidian库路径，例如 D:/Obsidian本地库/书籍管理>'
+profile: news
+cwd: 'D:/Obsidian本地库/书籍管理'
 overlap: skip
 timeoutMin: 20
 prompt: |
@@ -13,4 +13,4 @@ prompt: |
   4. 数学/物理/计算机速览：该方向 2-4 条一句话动态
   5. DSH 生态：deepseek-harness 发布或社区值得关注的变化
   全文控制在 800 字以内，客观转述；无法确证的信息标注「待确认」。
-  最后用 write 工具把简报全文写入工作区内的 RSS订阅/简报-YYYY-MM-DD.md（YYYY-MM-DD 用今天的日期，覆盖同名旧文件）。
+  最后用 write 工具把简报全文写入工作区内的 RSS订阅/简报/简报-YYYY-MM-DD.md（YYYY-MM-DD 用今天的日期，覆盖同名旧文件）。

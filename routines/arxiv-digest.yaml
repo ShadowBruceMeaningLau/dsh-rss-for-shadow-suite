@@ -1,8 +1,8 @@
 name: arxiv-digest
-schedule: '30 9 * * *'
+schedule: '10 12 * * *'
 timezone: Asia/Shanghai
-profile: headless
-cwd: '<你的Obsidian库路径，例如 D:/Obsidian本地库/书籍管理>'
+profile: news
+cwd: 'D:/Obsidian本地库/书籍管理'
 overlap: skip
 timeoutMin: 25
 prompt: |
@@ -11,4 +11,4 @@ prompt: |
   2. 每个方向挑 3-5 篇（共 15-20 篇），每篇给出：中文标题意译 + 一句话讲清楚做什么 + arXiv 链接
   3. 全领域选一篇「今日推荐」，标注并附一句推荐理由
   全文控制在 1000 字以内；标题给出原文标题与 arXiv 编号。
-  最后用 write 工具把简报全文写入工作区内的 RSS订阅/论文速递-YYYY-MM-DD.md（YYYY-MM-DD 用今天的日期，覆盖同名旧文件）。
+  最后用 write 工具把简报全文写入工作区内的 RSS订阅/论文速递/论文速递-YYYY-MM-DD.md（YYYY-MM-DD 用今天的日期，覆盖同名旧文件）。

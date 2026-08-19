@@ -1,6 +1,6 @@
 {
   "name": "dsh-rss-for-shadow-suite",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Shadow 套件的一站式资讯订阅插件：33 个 RSS 订阅源（AI/数学/物理/计算机）+ 每日简报与论文速递例程，安装即用。",
   "main": "lib/index.js",
