@@ -2,7 +2,7 @@ name: ai-digest
 schedule: '@daily'
 timezone: Asia/Shanghai
 profile: headless
-cwd: 'D:/Obsidian本地库/书籍管理'
+cwd: '<你的Obsidian库路径，例如 D:/Obsidian本地库/书籍管理>'
 overlap: skip
 timeoutMin: 20
 prompt: |

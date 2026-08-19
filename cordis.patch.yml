@@ -16,7 +16,7 @@
   name: 'dsh-rss'
   config:
     timeoutMs: 15000
-    proxyUrl: 'http://127.0.0.1:7897'
+    proxyUrl: ''  # 需要代理时改成你的代理地址，例如 http://127.0.0.1:7897（换机器请改这里）
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36'
     feedsYaml: |
       # ── DSH 生态 ──

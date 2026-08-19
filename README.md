@@ -15,7 +15,7 @@ dsh plugin --profile headless add github:ShadowBruceMeaningLau/dsh-rss-for-shado
 
 - **AI 每日简报**：每天首次启动服务器时自动生成（补跑最近一次）
 - **论文速递**：每天 9:30 触发（arXiv 8-9 点发完论文后）；9:30 后启动服务器则立即补跑
-- 两份产出都写入你的 Obsidian 库：`D:/Obsidian本地库/书籍管理/RSS订阅/简报-日期.md` 与 `论文速递-日期.md`（编辑例程文件的 `cwd` 可改位置）
+- 两份产出都写入例程 `cwd` 指向的目录：`<cwd>/RSS订阅/简报-日期.md` 与 `论文速递-日期.md`（`cwd` 需安装后自行配置，见「首次配置」）
 
 ## 组成
 
@@ -33,9 +33,13 @@ dsh plugin --profile headless add github:ShadowBruceMeaningLau/dsh-rss-for-shado
 - **数学/物理**：Quanta、Physics World、Nature 数学与计算、Science News
 - **arXiv 论文**：cs.AI / cs.LG / cs.CL / cs.SE / math / math-ph / hep-th / cond-mat / gr-qc / physics / quant-ph
 
+## 首次配置（安装后必做）
+
+源码中的例程 `cwd` 是占位符（仓库不携带任何人的本机路径）。安装后打开 `~/.dsh/routines/ai-digest.yaml` 与 `arxiv-digest.yaml`，把 `cwd` 改成你的 Obsidian 库路径（例：`D:/Obsidian本地库/书籍管理`），保存即可——插件不会覆盖你改过的例程文件。若 RSS 抓取需要代理，再按「配置说明」设置 `proxyUrl`。
+
 ## 配置说明
 
-- **代理**：抓取统一走 `http://127.0.0.1:7897`（你的本地代理）；换机器改 `cordis.patch.yml` 里 rss 行的 `proxyUrl`（本插件源码）后重装，或直接改 profile 的补丁覆盖
+- **代理**：`cordis.patch.yml` 里 rss 行的 `proxyUrl` 默认为空（不代理）；需要代理时改成你的代理地址（如 `http://127.0.0.1:7897`）后重装，或直接改 profile 的补丁覆盖
 - **OCR/其他密钥**：本插件不涉及；订阅源均为公开 RSS，无需密钥
 - **例程文件**：安装后位于 `~/.dsh/routines/`，可直接编辑（插件不会覆盖你改过的文件）
 - **调度状态**：位于服务器启动目录的 `.dsh/routines/state.json`，首次安装自动种子化
